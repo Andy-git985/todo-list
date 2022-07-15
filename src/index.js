@@ -1,30 +1,12 @@
 const todoItem = (title, description, dueDate, priority) => {
-  const getTitle = () => title;
-  const getDescription = () => description;
-  const getDueDate = () => dueDate;
-  const getPriority = () => priority;
-  return {
-    getTitle,
-    getDescription,
-    getDueDate,
-    getPriority,
-  };
+  const completed = false;
+  return { title, description, dueDate, priority, completed };
 };
 
-// const myLife = todoItem(
-//   'my life',
-//   'delete information off of my life website',
-//   new Date(2022, 7, 21),
-//   'Urgent'
-// );
-
 const toDoList = [];
+const projects = [];
 const createToDoItem = (...item) => {
   const newItem = todoItem(...item);
-  // console.log(newItem.getTitle());
-  // console.log(newItem.getDescription());
-  // console.log(newItem.getDueDate());
-  // console.log(newItem.getPriority());
   return newItem;
 };
 
@@ -35,7 +17,7 @@ const addToDoItem = (item) => {
 const newItem = createToDoItem(
   'clean',
   'clean the place',
-  new Date(2022, 7, 14),
+  new Date(2022, 6, 14),
   'Not Urgent'
 );
 
@@ -44,17 +26,33 @@ addToDoItem(
   createToDoItem(
     'returns',
     'return my online shopping',
-    new Date(2022, 7, 17),
+    new Date(2022, 6, 17),
     'Urgent'
   )
 );
 
-const addNewProject = (name) => toDoList.push({ name });
-
 const printToDo = (arr) => {
   arr.forEach((obj) => {
-    Object.values(obj).forEach((func) => console.log(func()));
+    Object.values(obj).forEach((v) => console.log(v));
   });
 };
+// toDoList.forEach(obj => Object.entries(obj).forEach(v => console.log(v)))
+// toDoList.forEach(obj => Object.entries(obj).forEach(([key, value]) => console.log(key, value)))
 
-printToDo(toDoList);
+const domStuff = (() => {
+  const render = () => {
+    const todos = document.querySelector('#todos');
+    for (const obj of toDoList) {
+      const outerDiv = document.createElement('div');
+      for (const [key, value] of Object.entries(obj)) {
+        const innerDiv = document.createElement('div');
+        innerDiv.textContent = `${key}: ${value}`;
+        outerDiv.appendChild(innerDiv);
+      }
+      todos.appendChild(outerDiv);
+    }
+  };
+  return { render };
+})();
+
+domStuff.render();
