@@ -38,6 +38,7 @@ const newItem = createToDoItem(
   new Date(2022, 7, 14),
   'Not Urgent'
 );
+
 addToDoItem(newItem);
 addToDoItem(
   createToDoItem(
@@ -47,6 +48,8 @@ addToDoItem(
     'Urgent'
   )
 );
+
+const addNewProject = (name) => toDoList.push({ name });
 
 const printToDo = (arr) => {
   arr.forEach((obj) => {
