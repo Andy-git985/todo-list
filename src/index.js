@@ -1,15 +1,14 @@
 import './style.css';
 import dom from './dom.js';
 
-const todoItem = (
-  title,
-  description,
-  dueDate,
-  priority,
-  progress,
-  projects
-) => {
-  return { title, description, dueDate, priority, progress, projects };
+const random = (length = 8) => {
+  return Math.random().toString(16).substr(2, length);
+};
+
+const todoItem = (title, description, dueDate, priority, progress, project) => {
+  const _id = () => random();
+  const getId = () => _id;
+  return { title, description, dueDate, priority, progress, project, getId };
 };
 
 const toDoList = [];
@@ -22,23 +21,6 @@ const createToDoItem = (...item) => {
 const addToDoItem = (item) => {
   toDoList.push(item);
 };
-
-// const newItem = createToDoItem(
-//   'clean',
-//   'clean the place',
-//   '2022'
-//   'Not Urgent'
-// );
-
-// s
-// addToDoItem(
-//   createToDoItem(
-//     'returns',
-//     'return my online shopping',
-//     new Date(2022, 6, 17),
-//     'Urgent'
-//   )
-// );
 
 const newItem = createToDoItem(
   'clean',
@@ -56,7 +38,7 @@ addToDoItem(
     '2022-07-17',
     'high',
     'doing',
-    'software developement'
+    'software development'
   )
 );
 
@@ -71,30 +53,48 @@ const projects = [];
 const createNewProject = (item) => {
   projects.push(item);
 };
+const filterProject = (query) => toDoList.filter((e) => e.project === query);
 
 createNewProject('software development');
 createNewProject('fitness');
-dom.render('#projects', projects);
+dom.renderProjectTab('#projects', projects);
 dom.renderFormProjects('#formProjectElem', projects);
 
 // ? Dom stuff
 
 const eventListeners = () => {
+  const addForm = document.querySelector('#addForm');
   const addProject = document.querySelector('#addProject');
-  addProject.addEventListener('click', () => {
-    const newProject = document.querySelector('#newProject');
-    createNewProject(newProject.value);
-    dom.render('#projects', projects);
-    dom.renderFormProjects('#formProjectElem', projects);
-  });
-  document.addEventListener('submit', (e) => {
+  const filterBtn = document.querySelectorAll('.filterBtn');
+  const deleteBtn = document.querySelectorAll('.delete');
+
+  addProject.addEventListener('submit', (e) => {
     e.preventDefault();
     const form = e.target;
-    const formData = [...new FormData(form)].map(([k, v]) => v);
-    console.log(formData);
+    const value = String([...new FormData(form)].map(([k, v]) => v));
+    if (projects.includes(value)) return;
+    createNewProject(value);
+    dom.renderProjectTab('#projects', projects);
+    dom.renderFormProjects('#formProjectElem', projects);
+  });
+
+  filterBtn.forEach((btn) =>
+    btn.addEventListener('click', (e) => {
+      const query = e.target.textContent;
+      dom.render('#todos', filterProject(query));
+    })
+  );
+
+  addForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const formData = [...new FormData(form)].reduce((o, [k, v]) => {
+      o[k] = v;
+      return o;
+    }, {});
     addToDoItem(formData);
     dom.render('#todos', toDoList);
   });
 };
-
+dom.render('#todos', toDoList);
 eventListeners();

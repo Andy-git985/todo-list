@@ -4,11 +4,11 @@ const dom = (() => {
   };
   const projBoilerPlate = (selector) => {
     const label = document.createElement('label');
-    label.setAttribute('for', 'projects');
+    label.setAttribute('for', 'project');
     label.textContent = 'Project';
     document.querySelector(selector).appendChild(label);
     const select = document.createElement('select');
-    select.setAttribute('name', 'projects');
+    select.setAttribute('name', 'project');
     const option = document.createElement('option');
     option.setAttribute('value', '');
     option.textContent = 'Select one';
@@ -16,27 +16,44 @@ const dom = (() => {
     select.insertAdjacentElement('beforebegin', label);
     return select;
   };
+  const createButton = (className) => {
+    const div = document.createElement('div');
+    const button = document.createElement('button');
+    button.setAttribute('button', 'button');
+    button.classList.add(className.toLowerCase());
+    button.textContent = className;
+    div.appendChild(button);
+    return div;
+  };
   const render = (selector, arr) => {
     clear(selector);
     const todos = document.querySelector(selector);
-    for (const obj of arr) {
+    for (const [i, obj] of Object.entries(arr)) {
       const outerDiv = document.createElement('div');
-      if (typeof obj !== 'string') {
-        for (const [key, value] of Object.entries(obj)) {
-          const innerDiv = document.createElement('div');
-          console.log(typeof value);
-          innerDiv.textContent = `${key}: ${value}`;
-          outerDiv.appendChild(innerDiv);
-        }
-      } else {
-        outerDiv.textContent = obj;
+      outerDiv.dataset.index = i;
+      for (const [key, value] of Object.entries(obj)) {
+        const innerDiv = document.createElement('div');
+        innerDiv.textContent = `${key}: ${value}`;
+        outerDiv.appendChild(innerDiv);
       }
+      outerDiv.appendChild(createButton('Update'));
+      outerDiv.appendChild(createButton('Delete'));
       todos.appendChild(outerDiv);
+    }
+  };
+  const renderProjectTab = (selector, arr) => {
+    clear(selector);
+    const project = document.querySelector(selector);
+    for (const i of arr) {
+      const div = document.createElement('div');
+      div.textContent = i;
+      div.classList.add('filterBtn');
+      project.appendChild(div);
     }
   };
   const renderFormProjects = (selector, arr) => {
     clear(selector);
-    const projects = document.querySelector(selector);
+    const formProject = document.querySelector(selector);
     const select = projBoilerPlate(selector);
     for (const [key, value] of Object.entries(arr)) {
       const option = document.createElement('option');
@@ -45,9 +62,9 @@ const dom = (() => {
       option.textContent = value;
       select.appendChild(option);
     }
-    projects.appendChild(select);
+    formProject.appendChild(select);
   };
-  return { render, renderFormProjects };
+  return { render, renderProjectTab, renderFormProjects };
 })();
 
 export default dom;
