@@ -1,10 +1,13 @@
+import './style.css';
+import dom from './dom.js';
+
 const todoItem = (title, description, dueDate, priority) => {
   const completed = false;
   return { title, description, dueDate, priority, completed };
 };
 
 const toDoList = [];
-const projects = [];
+
 const createToDoItem = (...item) => {
   const newItem = todoItem(...item);
   return newItem;
@@ -39,20 +42,22 @@ const printToDo = (arr) => {
 // toDoList.forEach(obj => Object.entries(obj).forEach(v => console.log(v)))
 // toDoList.forEach(obj => Object.entries(obj).forEach(([key, value]) => console.log(key, value)))
 
-const domStuff = (() => {
-  const render = () => {
-    const todos = document.querySelector('#todos');
-    for (const obj of toDoList) {
-      const outerDiv = document.createElement('div');
-      for (const [key, value] of Object.entries(obj)) {
-        const innerDiv = document.createElement('div');
-        innerDiv.textContent = `${key}: ${value}`;
-        outerDiv.appendChild(innerDiv);
-      }
-      todos.appendChild(outerDiv);
-    }
-  };
-  return { render };
-})();
+// ? Projects
+const projects = [];
+const createNewProject = (item) => {
+  projects.push(item);
+};
 
-domStuff.render();
+createNewProject('software development');
+createNewProject('fitness');
+dom.render('#projects', projects);
+dom.renderFormProjects('#formProjectElem', projects);
+
+// ? Dom stuff
+document.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const form = e.target;
+  const formData = [...new FormData(form)].map(([k, v]) => v);
+  addToDoItem(formData);
+  dom.render('#todos', toDoList);
+});
