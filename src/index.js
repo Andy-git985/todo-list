@@ -7,7 +7,7 @@ const random = (length = 8) => {
 
 const todoItem = (title, description, dueDate, priority, progress, project) => {
   const _id = () => random();
-  const getId = () => _id;
+  const getId = () => _id();
   return { title, description, dueDate, priority, progress, project, getId };
 };
 
@@ -88,13 +88,12 @@ const eventListeners = () => {
   addForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const form = e.target;
-    const formData = [...new FormData(form)].reduce((o, [k, v]) => {
-      o[k] = v;
-      return o;
-    }, {});
-    addToDoItem(formData);
+    const formData = [...new FormData(form)].map(([k, v]) => v);
+    addToDoItem(createToDoItem(...formData));
     dom.render('#todos', toDoList);
   });
 };
 dom.render('#todos', toDoList);
 eventListeners();
+console.log(toDoList);
+const result = toDoList;

@@ -2,6 +2,12 @@ const dom = (() => {
   const clear = (selector) => {
     document.querySelector(selector).textContent = '';
   };
+  const getIdArr = (arr) => {
+    return arr.map((e) => e.getId());
+  };
+  const filterOutId = (arr) => {
+    return Object.entries(arr).filter(([key]) => key !== 'getId');
+  };
   const projBoilerPlate = (selector) => {
     const label = document.createElement('label');
     label.setAttribute('for', 'project');
@@ -28,7 +34,9 @@ const dom = (() => {
   const render = (selector, arr) => {
     clear(selector);
     const todos = document.querySelector(selector);
-    for (const [i, obj] of Object.entries(arr)) {
+    const idArr = getIdArr(arr);
+    const filterArr = filterOutId(arr);
+    for (const [i, obj] of Object.entries(filterArr)) {
       const outerDiv = document.createElement('div');
       outerDiv.dataset.index = i;
       for (const [key, value] of Object.entries(obj)) {
