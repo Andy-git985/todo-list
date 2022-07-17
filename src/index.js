@@ -52,6 +52,7 @@ const eventListeners = () => {
   const addProject = document.querySelector('#addProject');
   const allBtn = document.querySelector('#allBtn');
   const filterBtn = document.querySelectorAll('.filterBtn');
+  const updateBtn = document.querySelectorAll('.update');
   const deleteBtn = document.querySelectorAll('.delete');
 
   addForm.addEventListener('submit', (e) => {
@@ -80,6 +81,12 @@ const eventListeners = () => {
       dom.render('#todos', filterProject(query));
     })
   );
+
+  updateBtn.forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      console.log(e.target.parentElement.parentElement.children[0]);
+    });
+  });
 
   deleteBtn.forEach((btn) => {
     btn.addEventListener('click', (e) => {

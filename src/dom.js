@@ -48,7 +48,14 @@ const dom = (() => {
       outerDiv.dataset.id = idArr[i];
       for (const [key, value] of Object.entries(obj)) {
         const innerDiv = document.createElement('div');
-        innerDiv.textContent = `${key}: ${value}`;
+        innerDiv.classList.add('flex', 'row');
+        const keyDiv = document.createElement('div');
+        keyDiv.textContent = `${key}:`;
+        const valueDiv = document.createElement('div');
+        valueDiv.setAttribute('contenteditable', true);
+        valueDiv.textContent = value;
+        innerDiv.appendChild(keyDiv);
+        innerDiv.appendChild(valueDiv);
         outerDiv.appendChild(innerDiv);
       }
       outerDiv.appendChild(createButton('Update'));
