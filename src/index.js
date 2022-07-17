@@ -5,27 +5,30 @@ const random = (length = 8) => {
   return Math.random().toString(16).substr(2, length);
 };
 
+// ! main function
 const todoItem = (title, description, dueDate, priority, progress, project) => {
-  const id = () => random();
+  // const id = () => random();
   // const getId = () => _id();
-  return { title, description, dueDate, priority, progress, project, id };
+  return { title, description, dueDate, priority, progress, project };
 };
 
+// ! main array
 const toDoList = [];
 
 const createToDoItem = (...item) => {
   const newItem = todoItem(...item);
-  return newItem;
+  return Object.assign({}, newItem, id());
 };
 
 const addToDoItem = (item) => {
   toDoList.push(item);
 };
 
-const printToDo = (arr) => {
-  arr.forEach((obj) => {
-    Object.values(obj).forEach((v) => console.log(v));
-  });
+// ! ids
+const id = () => {
+  const value = random();
+  const result = { id: value };
+  return Object.assign({}, result);
 };
 
 // ! Projects
@@ -125,3 +128,11 @@ dom.renderFormProjects('#formProjectElem', projects);
 
 dom.render('#todos', toDoList);
 eventListeners();
+
+// console.log(idList);
+// const todos = document.querySelector('#todos');
+// for (let i = 0; i < todos.children.length; i++) {
+//   todos.children[i].dataset.id = idList[i];
+// }
+
+console.log(toDoList);
