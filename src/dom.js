@@ -54,7 +54,7 @@ const dom = (() => {
         keyDiv.textContent = `${key}:`;
         const valueDiv = document.createElement('div');
         if (key in updateElem) {
-          valueDiv.innerHTML = updateElem[key]();
+          valueDiv.innerHTML = updateElem[key](value);
         } else {
           valueDiv.setAttribute('contenteditable', true);
           valueDiv.textContent = value;
@@ -99,11 +99,11 @@ const dom = (() => {
     formProject.appendChild(select);
   };
   const updateElem = {
-    dueDate: () => `
+    dueDate: (value) => `
     <label for="dueDate">Due Date</label>
-    <input type="date" name="dueDate" id="dueDate" />
+    <input type="date" name="dueDate" id="dueDate" value="${value}" />
     `,
-    priority: () => `
+    priority: (value) => `
     <label for="priority">Priority</label>
     <select name="priority" id="priority">
       <option value="">Select one</option>
@@ -113,7 +113,7 @@ const dom = (() => {
       <option data-index="3" value="urgent">Urgent</option>
     </select>
     `,
-    progress: () => `
+    progress: (value) => `
     <label for="progress">Progress</label>
     <select name="progress" id="progress">
       <option value="">Select one</option>
