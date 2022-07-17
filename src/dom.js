@@ -48,12 +48,17 @@ const dom = (() => {
       outerDiv.dataset.id = idArr[i];
       for (const [key, value] of Object.entries(obj)) {
         const innerDiv = document.createElement('div');
+
         innerDiv.classList.add('flex', 'row');
         const keyDiv = document.createElement('div');
         keyDiv.textContent = `${key}:`;
         const valueDiv = document.createElement('div');
-        valueDiv.setAttribute('contenteditable', true);
-        valueDiv.textContent = value;
+        if (key in updateElem) {
+          valueDiv.innerHTML = updateElem[key]();
+        } else {
+          valueDiv.setAttribute('contenteditable', true);
+          valueDiv.textContent = value;
+        }
         innerDiv.appendChild(keyDiv);
         innerDiv.appendChild(valueDiv);
         outerDiv.appendChild(innerDiv);
@@ -93,6 +98,32 @@ const dom = (() => {
     }
     formProject.appendChild(select);
   };
+  const updateElem = {
+    dueDate: () => `
+    <label for="dueDate">Due Date</label>
+    <input type="date" name="dueDate" id="dueDate" />
+    `,
+    priority: () => `
+    <label for="priority">Priority</label>
+    <select name="priority" id="priority">
+      <option value="">Select one</option>
+      <option data-index="0" value="low">Low</option>
+      <option data-index="1" value="medium">Medium</option>
+      <option data-index="2" value="high">High</option>
+      <option data-index="3" value="urgent">Urgent</option>
+    </select>
+    `,
+    progress: () => `
+    <label for="progress">Progress</label>
+    <select name="progress" id="progress">
+      <option value="">Select one</option>
+      <option data-index="0" value="todo">To Do</option>
+      <option data-index="1" value="doing">Doing</option>
+      <option data-index="2" value="done">Done</option>
+    </select>
+    `,
+  };
+
   return { render, renderProjectTab, renderFormProjects };
 })();
 
