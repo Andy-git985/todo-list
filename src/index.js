@@ -15,6 +15,7 @@ const todoItem = (title, description, dueDate, priority, progress, project) => {
 // ! main array
 const toDoList = [];
 
+// ! item and id function
 const createToDoItem = (...item) => {
   const newItem = todoItem(...item);
   return Object.assign({}, newItem, id());
@@ -82,11 +83,11 @@ const eventListeners = () => {
 
   deleteBtn.forEach((btn) => {
     btn.addEventListener('click', (e) => {
-      console.log(e.target.parentElement.parentElement);
       const id = e.target.parentElement.parentElement.dataset.id;
-      console.log(id);
-      const search = toDoList.map((e) => e.id);
-      console.log(search);
+      const search = toDoList.find((e) => e.id === id);
+      toDoList.splice(toDoList.indexOf(search), 1);
+      dom.render('#todos', toDoList);
+      refreshFormsTabs();
     });
   });
 };
@@ -134,5 +135,3 @@ eventListeners();
 // for (let i = 0; i < todos.children.length; i++) {
 //   todos.children[i].dataset.id = idList[i];
 // }
-
-console.log(toDoList);

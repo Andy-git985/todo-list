@@ -32,11 +32,20 @@ const dom = (() => {
     div.appendChild(button);
     return div;
   };
+  const getIdArr = (arr) => {
+    return arr.map((e) => e.id);
+  };
+  const filterOutId = (arr) => {
+    return arr.map((e) => omit(e, 'id'));
+  };
   const render = (selector, arr) => {
     clear(selector);
     const todos = document.querySelector(selector);
-    for (const [i, obj] of Object.entries(arr)) {
+    const idArr = getIdArr(arr);
+    const filterArr = filterOutId(arr);
+    for (const [i, obj] of Object.entries(filterArr)) {
       const outerDiv = document.createElement('div');
+      outerDiv.dataset.id = idArr[i];
       for (const [key, value] of Object.entries(obj)) {
         const innerDiv = document.createElement('div');
         innerDiv.textContent = `${key}: ${value}`;
