@@ -1,12 +1,19 @@
 const dom = (() => {
+  const omit = (obj, ...props) => {
+    const result = { ...obj };
+    props.forEach(function (prop) {
+      delete result[prop];
+    });
+    return result;
+  };
   const clear = (selector) => {
     document.querySelector(selector).textContent = '';
   };
   const getIdArr = (arr) => {
-    return arr.map((e) => e.getId());
+    return arr.map((e) => e.id);
   };
   const filterOutId = (arr) => {
-    return Object.entries(arr).filter(([key]) => key !== 'getId');
+    return arr.map((e) => omit(e, 'id'));
   };
   const projBoilerPlate = (selector) => {
     const label = document.createElement('label');
@@ -38,7 +45,7 @@ const dom = (() => {
     const filterArr = filterOutId(arr);
     for (const [i, obj] of Object.entries(filterArr)) {
       const outerDiv = document.createElement('div');
-      outerDiv.dataset.index = i;
+      outerDiv.dataset.id = idArr[i];
       for (const [key, value] of Object.entries(obj)) {
         const innerDiv = document.createElement('div');
         innerDiv.textContent = `${key}: ${value}`;
@@ -49,9 +56,16 @@ const dom = (() => {
       todos.appendChild(outerDiv);
     }
   };
+  const renderAllTab = () => {
+    const div = document.createElement('div');
+    div.id = 'allBtn';
+    div.textContent = 'All';
+    return div;
+  };
   const renderProjectTab = (selector, arr) => {
     clear(selector);
     const project = document.querySelector(selector);
+    project.appendChild(renderAllTab());
     for (const i of arr) {
       const div = document.createElement('div');
       div.textContent = i;

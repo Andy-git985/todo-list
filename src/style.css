@@ -12,6 +12,7 @@
   padding: 0.5em;
 }
 
+#allBtn,
 .filterBtn {
   cursor: pointer;
   outline: 1px solid red;
